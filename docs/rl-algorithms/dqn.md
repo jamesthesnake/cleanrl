@@ -16,7 +16,10 @@ Original papers:
 | Variants Implemented      | Description |
 | ----------- | ----------- |
 | :material-github: [`dqn_atari.py`](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/dqn_atari.py), :material-file-document: [docs](/rl-algorithms/dqn/#dqn_ataripy) |  For playing Atari games. It uses convolutional layers and common atari-based pre-processing techniques. |
-| :material-github: [`dqn.py`](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/dqn.py), :material-file-document: [docs](/rl-algorithms/dqn/#dqnpy) | For classic control tasks like `CartPole-v1`.
+| :material-github: [`dqn.py`](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/dqn.py), :material-file-document: [docs](/rl-algorithms/dqn/#dqnpy) | For classic control tasks like `CartPole-v1`. |
+| :material-github: [`dqn_atari_jax.py`](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/dqn_atari_jax.py), :material-file-document: [docs](/rl-algorithms/dqn/#dqn_atari_jaxpy) |  For playing Atari games. It uses convolutional layers and common atari-based pre-processing techniques. |
+| :material-github: [`dqn_jax.py`](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/dqn_jax.py), :material-file-document: [docs](/rl-algorithms/dqn/#dqn_jaxpy) | For classic control tasks like `CartPole-v1`. |
+
 
 Below are our single-file implementations of DQN:
 
@@ -79,21 +82,22 @@ with the Bellman update target is $y = r + \gamma \, Q^{'}(s', a')$ and the repl
     - `dqn_atari.py` uses `--exploration-fraction=0.1` whereas (Mnih et al., 2015)[^1] (Exntended Data Table 1) uses `--exploration-fraction=0.02` (all corresponds to 250000 steps or 1M frames being the frame that epsilon is annealed to `--end-e=0.1` ).
     - `dqn_atari.py` handles truncation and termination properly like (Mnih et al., 2015)[^1] by using SB3's replay buffer's `handle_timeout_termination=True`.
 1. `dqn_atari.py` use a self-contained evaluation scheme: `dqn_atari.py` reports the episodic returns obtained throughout training, whereas (Mnih et al., 2015)[^1] is trained with `--end-e=0.1` but reported episodic returns using a separate evaluation process with `--end-e=0.01` (See "Evaluation procedure" under "METHODS" on page 6).
-1. `dqn_atari.py` rescales the gradient so that the norm of the parameters does not exceed `0.5` like done in PPO (:material-github: [ppo2/model.py#L102-L108](https://github.com/openai/baselines/blob/ea25b9e8b234e6ee1bca43083f8f3cf974143998/baselines/ppo2/model.py#L102-L108)). 
 
 
 ### Experiment results
 
-PR :material-github: [vwxyzjn/cleanrl#124](https://github.com/vwxyzjn/cleanrl/pull/124) tracks our effort to conduct experiments, and the reprodudction instructions can be found at :material-github: [vwxyzjn/cleanrl/benchmark/dqn](https://github.com/vwxyzjn/cleanrl/tree/master/benchmark/dqn).
+To run benchmark experiments, see :material-github: [benchmark/dqn.sh](https://github.com/vwxyzjn/cleanrl/blob/master/benchmark/dqn.sh). Specifically, execute the following command:
+
+<script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Fvwxyzjn%2Fcleanrl%2Fblob%2Fe2d3c76b362b566798bfbb311f5bad467285504a%2Fbenchmark%2Fdqn.sh%23L9-L13&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on"></script>
 
 Below are the average episodic returns for `dqn_atari.py`. 
 
 
 | Environment      | `dqn_atari.py` 10M steps | (Mnih et al., 2015)[^1] 50M steps | (Hessel et al., 2017, Figure 5)[^3] 
 | ----------- | ----------- | ----------- | ---- |
-| BreakoutNoFrameskip-v4      | 337.64 ± 69.47      |401.2 ± 26.9  | ~230 at 10M steps, ~300 at 50M steps
-| PongNoFrameskip-v4  | 20.293 ± 0.37     |  18.9 ± 1.3 |  ~20 10M steps, ~20 at 50M steps 
-| BeamRiderNoFrameskip-v4   | 6207.41 ± 1019.96        | 6846 ± 1619 | ~6000 10M steps, ~7000 at 50M steps 
+| BreakoutNoFrameskip-v4      | 366.928 ± 39.89      |401.2 ± 26.9  | ~230 at 10M steps, ~300 at 50M steps
+| PongNoFrameskip-v4  | 20.25 ± 0.41     |  18.9 ± 1.3 |  ~20 10M steps, ~20 at 50M steps 
+| BeamRiderNoFrameskip-v4   | 6673.24 ± 1434.37        | 6846 ± 1619 | ~6000 10M steps, ~7000 at 50M steps 
 
 
 Note that we save computational time by reducing timesteps from 50M to 10M, but our `dqn_atari.py` scores the same or higher than (Mnih et al., 2015)[^1] in 10M steps.
@@ -112,7 +116,7 @@ Learning curves:
 
 Tracked experiments and game play videos:
 
-<iframe src="https://wandb.ai/openrlbenchmark/openrlbenchmark/reports/Atari-CleanRL-s-DQN--VmlldzoxNjk3NjYx" style="width:100%; height:500px" title="CleanRL DQN Tracked Experiments"></iframe>
+<iframe src="https://wandb.ai/openrlbenchmark/openrlbenchmark/reports/Atari-CleanRL-s-DQN--VmlldzoxNjk3NjYx" style="width:100%; height:500px" title="CleanRL DQN + Atari Tracked Experiments"></iframe>
 
 
 ## `dqn.py`
@@ -169,16 +173,18 @@ The [dqn.py](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/dqn.py) shar
 
 ### Experiment results
 
-PR :material-github: [vwxyzjn/cleanrl#157](https://github.com/vwxyzjn/cleanrl/pull/157) tracks our effort to conduct experiments, and the reprodudction instructions can be found at :material-github: [vwxyzjn/cleanrl/benchmark/dqn](https://github.com/vwxyzjn/cleanrl/tree/master/benchmark/dqn).
+To run benchmark experiments, see :material-github: [benchmark/dqn.sh](https://github.com/vwxyzjn/cleanrl/blob/master/benchmark/dqn.sh). Specifically, execute the following command:
+
+<script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Fvwxyzjn%2Fcleanrl%2Fblob%2Fe2d3c76b362b566798bfbb311f5bad467285504a%2Fbenchmark%2Fdqn.sh%23L2-L6&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on"></script>
 
 Below are the average episodic returns for `dqn.py`. 
 
 
 | Environment      | `dqn.py`  | 
 | ----------- | ----------- | 
-| CartPole-v1      | 471.21 ± 43.45      |
-| Acrobot-v1  | -93.37 ± 8.46     | 
-| MountainCar-v0   | -170.51 ± 26.22        | 
+| CartPole-v1      | 488.69 ± 16.11      |
+| Acrobot-v1  | -91.54 ± 7.20     | 
+| MountainCar-v0   | -194.95 ± 8.48        | 
 
 
 Note that the DQN has no official benchmark on classic control environments, so we did not include a comparison. That said, our `dqn.py` was able to achieve near perfect scores in `CartPole-v1` and `Acrobot-v1`; further, it can obtain successful runs in the sparse environment `MountainCar-v0`.
@@ -194,10 +200,136 @@ Learning curves:
 <img src="../dqn/MountainCar-v0.png">
 </div>
 
-
 Tracked experiments and game play videos:
 
 <iframe src="https://wandb.ai/openrlbenchmark/openrlbenchmark/reports/Classic-Control-CleanRL-s-DQN--VmlldzoxODE4Mjg1" style="width:100%; height:500px" title="CleanRL DQN Tracked Experiments"></iframe>
+
+
+
+## `dqn_atari_jax.py`
+
+
+The [dqn_atari_jax.py](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/dqn_atari_jax.py) has the following features:
+
+* Uses [Jax](https://github.com/google/jax), [Flax](https://github.com/google/flax), and [Optax](https://github.com/deepmind/optax) instead of `torch`.  [dqn_atari_jax.py](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/dqn_atari_jax.py) is roughly 25%-50% faster than  [dqn_atari.py](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/dqn_atari.py)
+* For playing Atari games. It uses convolutional layers and common atari-based pre-processing techniques.
+* Works with the Atari's pixel `Box` observation space of shape `(210, 160, 3)`
+* Works with the `Discrete` action space
+
+### Usage
+
+```bash
+poetry install -E "atari jax"
+poetry run pip install --upgrade "jax[cuda]==0.3.14" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+python cleanrl/dqn_atari_jax.py --env-id BreakoutNoFrameskip-v4
+python cleanrl/dqn_atari_jax.py --env-id PongNoFrameskip-v4
+```
+
+???+ warning
+
+    Note that JAX does not work in Windows :fontawesome-brands-windows:. The official [docs](https://github.com/google/jax#installation) recommends using Windows Subsystem for Linux (WSL) to install JAX.
+
+### Explanation of the logged metrics
+
+See [related docs](/rl-algorithms/dqn/#explanation-of-the-logged-metrics) for `dqn_atari.py`.
+
+### Implementation details
+
+See [related docs](/rl-algorithms/dqn/#implementation-details) for `dqn_atari.py`.
+
+### Experiment results
+
+To run benchmark experiments, see :material-github: [benchmark/dqn.sh](https://github.com/vwxyzjn/cleanrl/blob/master/benchmark/dqn.sh). Specifically, execute the following command:
+
+<script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Fvwxyzjn%2Fcleanrl%2Fblob%2Ff27b6d78be725aa71a0cf9f06caafce60450943a%2Fbenchmark%2Fdqn.sh%23L23-L29&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on"></script>
+
+
+Below are the average episodic returns for [`dqn_atari_jax.py`](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/dqn_atari_jax.py) (3 random seeds).
+
+
+| Environment             | `dqn_atari_jax.py` 10M steps | `dqn_atari.py` 10M steps | (Mnih et al., 2015)[^1] 50M steps | (Hessel et al., 2017, Figure 5)[^3]  |
+| ----------------------- | ---------------------------- | ------------------------ | --------------------------------- | ------------------------------------ |
+| BreakoutNoFrameskip-v4  | 377.82 ± 34.91               | 366.928 ± 39.89          | 401.2 ± 26.9                      | ~230 at 10M steps, ~300 at 50M steps |
+| PongNoFrameskip-v4      | 20.43 ± 0.34                 | 20.25 ± 0.41             | 18.9 ± 1.3                        | ~20 10M steps, ~20 at 50M steps      |
+| BeamRiderNoFrameskip-v4 | 5938.13 ± 955.84             | 6673.24 ± 1434.37        | 6846 ± 1619                       | ~6000 10M steps, ~7000 at 50M steps  |
+
+
+???+ info
+    
+    We observe a speedup of `~25%` in ['dqn_atari_jax.py'](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/dqn_atari_jax.py) compared to ['dqn_atari.py'](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/dqn_atari.py). This could be because the training loop is tightly integrated with the experience collection loop. We run a training loop every `4` environment steps by default. So more time is utilised in collecting experience than training the network. We observe much more speed-ups in algorithms which run a training step for each environment step. E.g., [DDPG](/rl-algorithms/ddpg/#experiment-results_1)
+
+Learning curves:
+
+<div class="grid-container">
+<img src="../dqn/jax/BeamRiderNoFrameskip-v4.png">
+<img src="../dqn/jax/BeamRiderNoFrameskip-v4-time.png">
+
+<img src="../dqn/jax/BreakoutNoFrameskip-v4.png">
+<img src="../dqn/jax/BreakoutNoFrameskip-v4-time.png">
+
+<img src="../dqn/jax/PongNoFrameskip-v4.png">
+<img src="../dqn/jax/PongNoFrameskip-v4-time.png">
+</div>
+
+Tracked experiments and game play videos:
+
+<iframe src="https://wandb.ai/openrlbenchmark/openrlbenchmark/reports/Atari-CleanRL-s-DQN-JAX--VmlldzoyMzM3MDg1" style="width:100%; height:500px" title="CleanRL DQN + JAX + Atari Tracked Experiments"></iframe>
+
+
+
+## `dqn_jax.py`
+* Uses [Jax](https://github.com/google/jax), [Flax](https://github.com/google/flax), and [Optax](https://github.com/deepmind/optax) instead of `torch`.  [dqn_atari_jax.py](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/dqn_jax.py) is roughly 2.5-4x faster than  [dqn_atari.py](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/dqn.py)
+* Works with the `Box` observation space of low-level features
+* Works with the `Discrete` action space
+* Works with envs like `CartPole-v1`
+
+### Usage
+
+```bash
+python cleanrl/dqn_jax.py --env-id CartPole-v1
+```
+
+### Explanation of the logged metrics
+
+See [related docs](/rl-algorithms/dqn/#explanation-of-the-logged-metrics) for `dqn_atari.py`.
+
+### Implementation details
+
+See [related docs](/rl-algorithms/dqn/#implementation-details_1) for `dqn.py`.
+
+### Experiment results
+
+To run benchmark experiments, see :material-github: [benchmark/dqn.sh](https://github.com/vwxyzjn/cleanrl/blob/master/benchmark/dqn.sh). Specifically, execute the following command:
+
+<script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Fvwxyzjn%2Fcleanrl%2Fblob%2Ff27b6d78be725aa71a0cf9f06caafce60450943a%2Fbenchmark%2Fdqn.sh%23L15-L21&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on"></script>
+
+Below are the average episodic returns for [`dqn_jax.py`](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/dqn_jax.py) (3 random seeds).
+
+
+
+| Environment    | `dqn_jax.py`   | `dqn.py`  | 
+| ----------- | ----------- | ----------- | 
+| CartPole-v1    |  499.84 ± 0.24 | 488.69 ± 16.11      |
+| Acrobot-v1 | -89.17 ± 8.79 | -91.54 ± 7.20     | 
+| MountainCar-v0 | -173.71 ± 29.14  | -194.95 ± 8.48        | 
+
+
+
+<div class="grid-container">
+<img src="../dqn/jax/CartPole-v1.png">
+<img src="../dqn/jax/CartPole-v1-time.png">
+
+<img src="../dqn/jax/Acrobot-v1.png">
+<img src="../dqn/jax/Acrobot-v1-time.png">
+
+<img src="../dqn/jax/MountainCar-v0.png">
+<img src="../dqn/jax/MountainCar-v0-time.png">
+</div>
+
+
+Tracked experiments and game play videos:
+
+<iframe src="https://wandb.ai/openrlbenchmark/openrlbenchmark/reports/-WIP-Classic-Control-CleanRL-s-DQN-JAX--VmlldzoyMzg5OTg2" style="width:100%; height:500px" title="CleanRL DQN + JAX Tracked Experiments"></iframe>
 
 
 

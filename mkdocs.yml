@@ -2,8 +2,11 @@ site_name: CleanRL User Guide
 theme:
   name: material
   features:
-    - navigation.instant
+    # - navigation.instant
+    - navigation.tracking
     # - navigation.tabs
+    # - navigation.tabs.sticky
+    - navigation.sections
     - navigation.expand
     - navigation.top
     - search.suggest
@@ -42,6 +45,8 @@ markdown_extensions:
   - attr_list
   - md_in_html
   - footnotes
+  - markdown_include.include:
+      base_path: docs
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
@@ -73,9 +78,6 @@ nav:
     - get-started/experiment-tracking.md
     - get-started/examples.md
     - get-started/benchmark-utility.md
-  - Cloud Integration: 
-    - cloud/installation.md
-    - cloud/submit-experiments.md
   - RL Algorithms:
     - rl-algorithms/overview.md
     - rl-algorithms/ppo.md
@@ -84,17 +86,22 @@ nav:
     - rl-algorithms/ddpg.md
     - rl-algorithms/sac.md
     - rl-algorithms/td3.md
-  - Open RL Benchmark: open-rl-benchmark.md
+    - rl-algorithms/ppg.md
+    - rl-algorithms/ppo-rnd.md
   - Advanced:
+    - advanced/hyperparameter-tuning.md
     - advanced/resume-training.md
-  - Community: community.md
-  - Contribution: contribution.md
-  - made-with-cleanrl.md
+  - Community:
+    - contribution.md
+    - made-with-cleanrl.md
+  - Cloud Integration: 
+    - cloud/installation.md
+    - cloud/submit-experiments.md
 #footer
 extra:
   social:
     - icon: fontawesome/solid/envelope
-      link: mailto:costa.huang@live.com
+      link: mailto:costa.huang@outlook.com
     - icon: fontawesome/brands/twitter
       link: https://twitter.com/vwxyzjn
     - icon: fontawesome/brands/github
