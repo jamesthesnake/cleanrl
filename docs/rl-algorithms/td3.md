@@ -21,7 +21,7 @@ Reference resources:
 | Variants Implemented      | Description |
 | ----------- | ----------- |
 | :material-github: [`td3_continuous_action.py`](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/td3_continuous_action.py), :material-file-document: [docs](/rl-algorithms/td3/#td3_continuous_actionpy) | For continuous action space |
-
+| :material-github: [`td3_continuous_action_jax.py`](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/td3_continuous_action_jax.py), :material-file-document: [docs](/rl-algorithms/td3/#td3_continuous_action_jaxpy) | For continuous action space |
 
 Below are our single-file implementations of TD3:
 
@@ -35,14 +35,26 @@ The [td3_continuous_action.py](https://github.com/vwxyzjn/cleanrl/blob/master/cl
 
 ### Usage
 
-```bash
-poetry install
-poetry install --with pybullet
-python cleanrl/td3_continuous_action.py --help
-python cleanrl/td3_continuous_action.py --env-id HopperBulletEnv-v0
-poetry install --with mujoco # only works in Linux
-python cleanrl/td3_continuous_action.py --env-id Hopper-v3
-```
+=== "poetry"
+
+    ```bash
+    poetry install
+    poetry install -E pybullet
+    poetry run python cleanrl/td3_continuous_action.py --help
+    poetry run python cleanrl/td3_continuous_action.py --env-id HopperBulletEnv-v0
+    poetry install -E mujoco_py # only works in Linux
+    poetry run python cleanrl/td3_continuous_action.py --env-id Hopper-v2
+    ```
+
+=== "pip"
+
+    ```bash
+    pip install -r requirements/requirements-pybullet.txt
+    python cleanrl/td3_continuous_action.py --help
+    python cleanrl/td3_continuous_action.py --env-id HopperBulletEnv-v0
+    pip install -r requirements/requirements-mujoco_py.txt # only works in Linux, you have to pick either `mujoco` or `mujoco_py`
+    python cleanrl/td3_continuous_action.py --env-id Hopper-v2
+    ```
 
 ### Explanation of the logged metrics
 
@@ -175,14 +187,27 @@ The [td3_continuous_action_jax.py](https://github.com/vwxyzjn/cleanrl/blob/maste
 
 ### Usage
 
-```bash
-poetry install --with mujoco,jax
-poetry run pip install --upgrade "jax[cuda]==0.3.17" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
-poetry run python -c "import mujoco_py"
-python cleanrl/td3_continuous_action_jax.py --help
-poetry install --with mujoco # only works in Linux
-python cleanrl/td3_continuous_action_jax.py --env-id Hopper-v3
-```
+=== "poetry"
+
+    ```bash
+    poetry install
+    poetry install -E "pybullet jax"
+    poetry run python cleanrl/td3_continuous_action_jax.py --help
+    poetry run python cleanrl/td3_continuous_action_jax.py --env-id HopperBulletEnv-v0
+    poetry install -E mujoco_py # only works in Linux
+    poetry run python cleanrl/td3_continuous_action_jax.py --env-id Hopper-v2
+    ```
+
+=== "pip"
+
+    ```bash
+    pip install -r requirements/requirements-pybullet.txt
+    pip install -r requirements/requirements-jax.txt
+    python cleanrl/td3_continuous_action_jax.py --help
+    python cleanrl/td3_continuous_action_jax.py --env-id HopperBulletEnv-v0
+    pip install -r requirements/requirements-mujoco_py.txt # only works in Linux, you have to pick either `mujoco` or `mujoco_py`
+    python cleanrl/td3_continuous_action_jax.py --env-id Hopper-v2
+    ```
 
 ### Explanation of the logged metrics
 
@@ -196,7 +221,7 @@ See [related docs](/rl-algorithms/td3/#implementation-details) for `td3_continuo
 
 ### Experiment results
 
-To run benchmark experiments, see :material-github: [benchmark/ddpg.sh](https://github.com/vwxyzjn/cleanrl/blob/master/benchmark/ddpg.sh). Specifically, execute the following command:
+To run benchmark experiments, see :material-github: [benchmark/td3.sh](https://github.com/vwxyzjn/cleanrl/blob/master/benchmark/td3.sh). Specifically, execute the following command:
 
 <script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Fvwxyzjn%2Fcleanrl%2Fblob%2Fmaster%2Fbenchmark%2Ftd3.sh%23L9-L16&style=github&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
 

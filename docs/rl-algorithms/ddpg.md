@@ -22,7 +22,7 @@ Reference resources:
 | Variants Implemented      | Description |
 | ----------- | ----------- |
 | :material-github: [`ddpg_continuous_action.py`](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/ddpg_continuous_action.py), :material-file-document: [docs](/rl-algorithms/ddpg/#ddpg_continuous_actionpy) | For continuous action space |
-
+| :material-github: [`ddpg_continuous_action_jax.py`](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/ddpg_continuous_action_jax.py), :material-file-document: [docs](/rl-algorithms/ddpg/#ddpg_continuous_action_jaxpy) | For continuous action space |
 
 Below is our single-file implementation of DDPG:
 
@@ -36,14 +36,26 @@ The [ddpg_continuous_action.py](https://github.com/vwxyzjn/cleanrl/blob/master/c
 
 ### Usage
 
-```bash
-poetry install
-poetry install --with pybullet
-python cleanrl/ddpg_continuous_action.py --help
-python cleanrl/ddpg_continuous_action.py --env-id HopperBulletEnv-v0
-poetry install --with mujoco # only works in Linux
-python cleanrl/ddpg_continuous_action.py --env-id Hopper-v3
-```
+=== "poetry"
+
+    ```bash
+    poetry install
+    poetry install -E pybullet
+    poetry run python cleanrl/ddpg_continuous_action.py --help
+    poetry run python cleanrl/ddpg_continuous_action.py --env-id HopperBulletEnv-v0
+    poetry install -E mujoco_py # only works in Linux
+    poetry run python cleanrl/ddpg_continuous_action.py --env-id Hopper-v2
+    ```
+
+=== "pip"
+
+    ```bash
+    pip install -r requirements/requirements-pybullet.txt
+    python cleanrl/ddpg_continuous_action.py --help
+    python cleanrl/ddpg_continuous_action.py --env-id HopperBulletEnv-v0
+    pip install -r requirements/requirements-mujoco_py.txt # only works in Linux, you have to pick either `mujoco` or `mujoco_py`
+    python cleanrl/ddpg_continuous_action.py --env-id Hopper-v2
+    ```
 
 ### Explanation of the logged metrics
 
@@ -220,7 +232,7 @@ Additionally, when drawing exploration noise that is added to the actions produc
 
 To run benchmark experiments, see :material-github: [benchmark/ddpg.sh](https://github.com/vwxyzjn/cleanrl/blob/master/benchmark/ddpg.sh). Specifically, execute the following command:
 
-<script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Fvwxyzjn%2Fcleanrl%2Fblob%2F2e2dc9c6ede5e5e5df3eaea73c458bb9a83507d2%2Fbenchmark%2Fddpg.sh%23L1-L7&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on"></script>
+<script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Fvwxyzjn%2Fcleanrl%2Fblob%2Fmaster%2Fbenchmark%2Fddpg.sh%23L1-L7&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on"></script>
 
 Below are the average episodic returns for [`ddpg_continuous_action.py`](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/ddpg_continuous_action.py) (3 random seeds). To ensure the quality of the implementation, we compared the results against (Fujimoto et al., 2018)[^2].
 
@@ -261,14 +273,28 @@ The [ddpg_continuous_action_jax.py](https://github.com/vwxyzjn/cleanrl/blob/mast
 
 ### Usage
 
-```bash
-poetry install --with mujoco,jax
-poetry run pip install --upgrade "jax[cuda]==0.3.17" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
-poetry run python -c "import mujoco_py"
-python cleanrl/ddpg_continuous_action_jax.py --help
-poetry install --with mujoco # only works in Linux
-python cleanrl/ddpg_continuous_action_jax.py --env-id Hopper-v3
-```
+=== "poetry"
+
+    ```bash
+    poetry install
+    poetry install -E "pybullet jax"
+    poetry run python cleanrl/ddpg_continuous_action_jax.py --help
+    poetry run python cleanrl/ddpg_continuous_action_jax.py --env-id HopperBulletEnv-v0
+    poetry install -E mujoco_py # only works in Linux
+    poetry run python cleanrl/ddpg_continuous_action_jax.py --env-id Hopper-v2
+    ```
+
+=== "pip"
+
+    ```bash
+    pip install -r requirements/requirements-pybullet.txt
+    pip install -r requirements/requirements-jax.txt
+    python cleanrl/ddpg_continuous_action_jax.py --help
+    python cleanrl/ddpg_continuous_action_jax.py --env-id HopperBulletEnv-v0
+    pip install -r requirements/requirements-mujoco_py.txt # only works in Linux, you have to pick either `mujoco` or `mujoco_py`
+    python cleanrl/ddpg_continuous_action_jax.py --env-id Hopper-v2
+    ```
+
 
 ???+ warning
 
@@ -288,7 +314,7 @@ See [related docs](/rl-algorithms/ddpg/#implementation-details) for `ddpg_contin
 
 To run benchmark experiments, see :material-github: [benchmark/ddpg.sh](https://github.com/vwxyzjn/cleanrl/blob/master/benchmark/ddpg.sh). Specifically, execute the following command:
 
-<script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Fvwxyzjn%2Fcleanrl%2Fblob%2F5f0ed8443904c15cfd6d0d61cb9813b475263e60%2Fbenchmark%2Fddpg.sh%23L9-L16&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on"></script>
+<script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Fvwxyzjn%2Fcleanrl%2Fblob%2Fmaster%2Fbenchmark%2Fddpg.sh%23L9-L16&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on"></script>
 
 Below are the average episodic returns for [`ddpg_continuous_action_jax.py`](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/ddpg_continuous_action_jax.py) (3 random seeds). To ensure the quality of the implementation, we compared the results against (Fujimoto et al., 2018)[^2].
 
