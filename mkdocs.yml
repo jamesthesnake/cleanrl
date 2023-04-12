@@ -1,4 +1,4 @@
-site_name: CleanRL User Guide
+site_name: CleanRL
 theme:
   name: material
   features:
@@ -26,14 +26,45 @@ theme:
       toggle:
         icon: material/lightbulb-outline
         name: Switch to dark mode
-
 plugins:
   - search
+nav:
+  - Overview: index.md
+  - Get Started:
+    - get-started/installation.md
+    - get-started/basic-usage.md
+    - get-started/experiment-tracking.md
+    - get-started/examples.md
+    - get-started/benchmark-utility.md
+    - get-started/zoo.md
+  - RL Algorithms:
+    - rl-algorithms/overview.md
+    - rl-algorithms/ppo.md
+    - rl-algorithms/dqn.md
+    - rl-algorithms/c51.md
+    - rl-algorithms/ddpg.md
+    - rl-algorithms/sac.md
+    - rl-algorithms/td3.md
+    - rl-algorithms/ppg.md
+    - rl-algorithms/ppo-rnd.md
+    - rl-algorithms/rpo.md
+  - Advanced:
+    - advanced/hyperparameter-tuning.md
+    - advanced/resume-training.md
+  - Community:
+    - contribution.md
+    - cleanrl-supported-papers-projects.md
+  - Cloud Integration: 
+    - cloud/installation.md
+    - cloud/submit-experiments.md
 #adding git repo
 repo_url: https://github.com/vwxyzjn/cleanrl
 repo_name: vwxyzjn/cleanrl
 #markdown_extensions 
 markdown_extensions:
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true 
   - abbr
   - pymdownx.highlight
   - pymdownx.inlinehilite
@@ -41,7 +72,6 @@ markdown_extensions:
   - pymdownx.snippets
   - admonition
   - pymdownx.details
-  - pymdownx.superfences
   - attr_list
   - md_in_html
   - footnotes
@@ -70,33 +100,6 @@ extra_css:
 # extra_javascript:
 #   - js/termynal.js
 #   - js/custom.js
-nav:
-  - Overview: index.md
-  - Get Started:
-    - get-started/installation.md
-    - get-started/basic-usage.md
-    - get-started/experiment-tracking.md
-    - get-started/examples.md
-    - get-started/benchmark-utility.md
-  - RL Algorithms:
-    - rl-algorithms/overview.md
-    - rl-algorithms/ppo.md
-    - rl-algorithms/dqn.md
-    - rl-algorithms/c51.md
-    - rl-algorithms/ddpg.md
-    - rl-algorithms/sac.md
-    - rl-algorithms/td3.md
-    - rl-algorithms/ppg.md
-    - rl-algorithms/ppo-rnd.md
-  - Advanced:
-    - advanced/hyperparameter-tuning.md
-    - advanced/resume-training.md
-  - Community:
-    - contribution.md
-    - cleanrl-supported-papers-projects.md
-  - Cloud Integration: 
-    - cloud/installation.md
-    - cloud/submit-experiments.md
 #footer
 extra:
   social:
